@@ -1,0 +1,43 @@
+.ReviewsList {
+  max-width: calc(100vw - 72px);
+  padding: 0;
+  list-style: none;
+  margin-left: auto;
+  margin-right: auto;
+  border-top: 1px solid #8ca87c;
+}
+
+.ReviewsListItem {
+  padding: 16px 0;
+  border-bottom: 1px solid #8ca87c;
+}
+
+.ReviewsAuthorTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #617a53;
+}
+
+.ReviewsAuthor {
+  font-size: 16px;
+  font-weight: 500;
+  color: #617a53;
+}
+
+.ReviewsContent {
+  padding-left: 24px;
+  margin: 16px 0 0 0;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+  color: #617a53;
+}
+
+.ReviewsCreated {
+  padding-left: 4px;
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  font-style: italic;
+  color: #617a53;
+}

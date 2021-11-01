@@ -1,0 +1,58 @@
+.SingleFilm {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 0 36px;
+}
+
+.imageFrame {
+  width: 342px;
+  height: 513px;
+  margin-right: 12px;
+}
+
+.imgFilm {
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  object-fit: cover;
+}
+
+.filmData {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 120px;
+}
+
+.filmTitle {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #617a53;
+}
+
+.filmText {
+  margin-top: 0;
+  margin-left: 12px;
+  margin-bottom: 4px;
+  color: #617a53;
+}
+
+.filmTextValue {
+  margin-top: 0;
+  margin-left: 36px;
+  margin-bottom: 12px;
+  color: #617a53;
+  font-style: italic;
+}
+
+.FilmLink {
+  margin-top: 0;
+  margin-left: 36px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #617a53;
+  font-style: italic;
+  text-decoration: underline;
+}

@@ -1,2 +1,7 @@
-# goit-react-hw-05-movies
-goit-react-hw-05-movies
+# goit-react-hw-05-movie
+
+goit-react-hw-05-movie
+
+Выполнено в полном объеме в соответствии с Заданием «Кинопоиск».
+
+Дополнительно реализован бесконечный скролл.

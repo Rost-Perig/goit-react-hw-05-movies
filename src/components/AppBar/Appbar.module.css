@@ -1,0 +1,17 @@
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  padding: 0 24px;
+  z-index: 1100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 48px;
+  background-color: #afc7a1;
+  border-bottom: 2px solid #6c855e;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); */
+}
