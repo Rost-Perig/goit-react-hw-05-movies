@@ -1,7 +1,12 @@
+.Navigation {
+  display: flex;
+}
+
 .link {
   display: inline-block;
   text-decoration: none;
-  padding: 8px 12px;
+  /* padding: 8px 12px; */
+  margin: 4px;
   font-weight: 500;
   color: #8ca87c;
   font-size: 20px;

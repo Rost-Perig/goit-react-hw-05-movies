@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
 import React from 'react';
-import {Switch, Route, useHistory } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import AppBar from './components/AppBar/AppBar';
 import BtnToTop from './components/BtnToTop/BtnToTop';
@@ -18,15 +17,12 @@ const FilmView = lazy(() => import('./views/FilmView.js'));
 
 
 function App() {
-    const history = useHistory();
-    // const location = useLocation();
-
-    useEffect(() => {
-        // console.log('history: ', history.location.pathname)
-        // console.log('location: ', location)
-        if(history.location.pathname.includes("/home") || history.location.pathname.includes("/movies")) return;
-        history.push('/home');
-    },[history])
+    // вариант загружаться первый раз с /home не используя Redirect, не лучшее решение, но..... вариант
+    // const history = useHistory();
+    // useEffect(() => {
+    //     if(history.location.pathname.includes("/home") || history.location.pathname.includes("/movies")) return;
+    //     history.push('/home');
+    // },[history])
 
     return (
         <div className="App">
@@ -35,7 +31,7 @@ function App() {
             
             <Suspense fallback={<Spinner />}>
                 <Switch>
-                <Route path='/home' exact>
+                    <Route path='/home' exact>
                         <HomeView/>
                     </Route>
 
@@ -49,7 +45,11 @@ function App() {
 
                     <Route path='/movies/:movieId'>
                         <FilmView/>
-                    </Route>  
+                    </Route>
+                    
+                    <Redirect to='/home'>
+                        <HomeView/>
+                    </Redirect>
                 </Switch>   
             </Suspense>
 
