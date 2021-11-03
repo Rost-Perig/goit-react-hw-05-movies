@@ -1,23 +1,35 @@
 import { NavLink, useParams, useRouteMatch, Route } from "react-router-dom";
+import { useHistory, useLocation} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import s from './SingleFilm.module.css';
 import movieApiService from '../../services/api-service';
 import Cast from '../../components/Cast/Cast';
 import Reviews from '../../components/Reviews/Reviews';
 import Spinner from '../Spinner/Spinner';
+import { IoArrowBackSharp } from "react-icons/io5";
 
 
 const BASE_IMG_URL = 'https://image.tmdb.org/t/p/w342';
+let prevLocation = null;
 
 export default function SingleFilm() {
+    const history = useHistory();
+    const location = useLocation();
     const { url } = useRouteMatch();
     const { movieId } = useParams();
     const [film, setFilm] = useState(null);
     const [status, setStatus] = useState('pending');
-
+    // const [prevLocationState, setPrevLocationState] = useState(null);
     
+    useEffect(() => {
+        if (!location.state) return;
+        // setPrevLocationState(location.state.from);
+        prevLocation = location.state.from;
+    },[])
 
     useEffect(() => {
+        
+
         async function fetchData() {
         setStatus('pending');
         let newRequest;
@@ -41,6 +53,14 @@ export default function SingleFilm() {
         fetchData();
         // const {backdrop_path, title, release_date, genres, overview, vote_average, vote_count} = film.data	
     }, [movieId]);
+
+    const handleGoBack = () => {
+        const { pathname, search } = prevLocation;
+        history.push({
+            pathname: pathname,
+            search: search,
+        });
+    };
     
     return (
         <>
@@ -52,6 +72,10 @@ export default function SingleFilm() {
             
             {(status === 'resolved') && (
                 <>
+                    <button type="button" onClick={handleGoBack} className={s.GoBackBtn}>
+                        <IoArrowBackSharp />
+                        <span>GO BACK</span>    
+                    </button>
                     {(film) && (
                         <div className={s.SingleFilm}>
                             <div className={s.imageFrame}>

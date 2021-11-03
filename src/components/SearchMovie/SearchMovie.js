@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useRouteMatch } from "react-router-dom";
+import { useHistory, useLocation} from 'react-router-dom';
 import { ImSearch } from 'react-icons/im';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,9 +15,10 @@ import NoImage from '../../images/NoImage.PNG'
 const BASE_IMG_URL = 'https://image.tmdb.org/t/p/w300';
 
 export default function SearchMovie() {
+    const history = useHistory();
+    const location = useLocation();
     const { url } = useRouteMatch();
     const [inputQuery, setInputQuery] = useState('');
-    const [searchQuery, setSearchQuery] = useState(null);
     const [searchMovieArr, setSearchMovieArr] = useState([]);
     const [totalMovie, setTotalMovie] = useState(0);
     const [page, setPage] = useState(1);
@@ -25,12 +27,19 @@ export default function SearchMovie() {
     const inputRef = useRef();
 
     useEffect(() => {
+        // console.log('history', history)
+        // console.log('location', location.search)
+        // console.log('ation', location.search.slice(7, location.search.length))
+
+        const newQuery = location.search.slice(7, location.search.length)
+
         async function fetchData() {
-            if (!searchQuery) return;
+            if (!location.search) return;
             setStatus('pending');
             let newRequest;
             try {
-                newRequest = await movieApiService.fetchMovie(searchQuery, 1);
+                newRequest = await movieApiService.fetchMovie(newQuery, 1);
+                
                 setSearchMovieArr([...newRequest.data.results]);
                 setTotalMovie(newRequest.data.total_results);
                 setStatus(() => {
@@ -48,7 +57,7 @@ export default function SearchMovie() {
         };
 
         fetchData();
-    }, [searchQuery]);
+    }, [location, history]);
 
     const handleInputChange = e => setInputQuery(e.currentTarget.value);
 
@@ -63,7 +72,10 @@ export default function SearchMovie() {
             );
             return;
         };
-        setSearchQuery(inputQuery);
+        // setSearchQuery(inputQuery);
+        history.push({
+                    search: `query=${inputQuery}`,
+                })
         inputRef.current.placeholder = inputQuery;
         setInputQuery('');
     };
@@ -72,10 +84,11 @@ export default function SearchMovie() {
 
     useEffect(() => {
         if (page === 1) return;
+        const newQuery = location.search.slice(7, location.search.length)
         async function nextFetch() {
             let newRequest;
             try {
-                newRequest = await movieApiService.fetchMovie(searchQuery, page);
+                newRequest = await movieApiService.fetchMovie(newQuery, page);
                 if (newRequest.data.results.length === 0) return;
                 setSearchMovieArr(prevState => [...prevState, ...newRequest.data.results]);
                 setTotalMovie(newRequest.data.total_results);
@@ -86,7 +99,7 @@ export default function SearchMovie() {
             };       
         };
         nextFetch();
-    }, [searchQuery, page]);
+    }, [page, location]);
 
     // endless Scroll
 
@@ -125,14 +138,19 @@ export default function SearchMovie() {
         
         {(status === 'failed') && <h2 className="galleryTitle">Error: request failed. Нет соединения с интернетом или сервером</h2>}
         
-        {(status === 'resolved') && (
+        {(status === 'resolved' && location.search) && (
             <>
                 <ul id="search-gallery" className={s.SearchList}>
                     {searchMovieArr.map(item => {
                         const { id, backdrop_path, title, release_date } = item;
                         return (
                             <li key={id}  id={id}>
-                                <Link to={`${url}/${id}`} className={s.SearchListItem} >
+                                <Link
+                                    to={{
+                                        pathname: `${url}/${id}`,
+                                        state: { from: location },
+                                    }}   
+                                    className={s.SearchListItem} >
                                 {backdrop_path && <img src={`${BASE_IMG_URL}${backdrop_path}`} alt={title} className={s.SearchListItemImage} />}
                                 {!backdrop_path && <img src={NoImage} alt="NoImage" />}
                                 <span className={s.SearchedMovieTitle}>{title}</span>

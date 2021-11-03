@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
+import { useLocation} from 'react-router-dom';
 import s from './HomeGallery.module.css';
 import movieApiService from '../../services/api-service';
 import Spinner from '../Spinner/Spinner';
@@ -9,6 +10,7 @@ import infiniteScroll from '../../services/infinite-scroll-service';
 const BASE_IMG_URL = 'https://image.tmdb.org/t/p/w342';
 
 export default function HomeGallery() {
+    const location = useLocation();
     const { url } = useRouteMatch();
     const [trendingMovieArr, setTrendingMovieArr] = useState([]);
     const [page, setPage] = useState(1);
@@ -87,7 +89,12 @@ export default function HomeGallery() {
                             const { id, poster_path, title } = item;
                             return (
                                 <li key={id} >
-                                    <Link to={`${url}/${id}`} className={s.MovieGalleryItem}>
+                                    <Link
+                                        to={{
+                                            pathname: `${url}/${id}`,
+                                            state: { from: location },
+                                        }}  
+                                        className={s.MovieGalleryItem}>
                                         <img src={`${BASE_IMG_URL}${poster_path}`} id={id} alt={title} className={s.MovieGalleryItemImage} />
                                         <h4 className={s.MovieTitle}>{title}</h4>
                                     </Link>
