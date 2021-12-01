@@ -10,7 +10,7 @@ import { IoArrowBackSharp } from "react-icons/io5";
 
 
 const BASE_IMG_URL = 'https://image.tmdb.org/t/p/w342';
-let prevLocation = null;
+// let prevLocation = null;  //для сохранения пути, откуда мы пришли, чтоб можно было вернуться по кнопке GO BACK
 
 export default function SingleFilm() {
     const history = useHistory();
@@ -19,12 +19,14 @@ export default function SingleFilm() {
     const { movieId } = useParams();
     const [film, setFilm] = useState(null);
     const [status, setStatus] = useState('pending');
-    // const [prevLocationState, setPrevLocationState] = useState(null);
+    const [prevLocationState, setPrevLocationState] = useState(null);  //для сохранения пути, откуда мы пришли, чтоб можно было вернуться по кнопке 
+
+//сохранение в стейте (или в локальной переменной - вариант), откуда мы пришли, чтоб потом можно было вернутся  туда по кнопке GO BACK
     
     useEffect(() => {
         if (!location.state) return;
-        // setPrevLocationState(location.state.from);
-        prevLocation = location.state.from;
+        setPrevLocationState(location.state.from);
+        // prevLocation = location.state.from;
     },[])
 
     useEffect(() => {
@@ -55,7 +57,9 @@ export default function SingleFilm() {
     }, [movieId]);
 
     const handleGoBack = () => {
-        const { pathname, search } = prevLocation;
+        if (!prevLocationState) return;
+        // const { pathname, search } = prevLocation;
+        const { pathname, search } = prevLocationState;
         history.push({
             pathname: pathname,
             search: search,
